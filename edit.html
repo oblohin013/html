@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>New test</title>
+    <style>
+      body {
+        display: flex;
+        align-items: stretch;
+        font-family: Arial, Helvetica, sans-serif;
+        flex-direction: column;
+      }
+      .logo {
+        align-self: center;
+      }
+      .fullTest {
+        background-color: rgb(247, 246, 246);
+        display: flex;
+        flex-direction: column;
+        border-style: solid;
+        border-width: thin;
+        padding: 10px;
+        margin: 10px;
+        border-radius: 15px;
+      }
+      .title {
+        display: flex;
+        justify-content: center;
+      }
+      #myName {
+        font-size: 30px;
+        font-weight: bold;
+        border-radius: 12px;
+        border-width: thin;
+        text-align: center;
+      }
+      #myTime {
+        height: 30px;
+        width: 100px;
+        border-radius: 12px;
+        border-width: thin;
+        padding-left: 10px;
+      }
+      .info,
+      .buttons {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+      }
+      .info1,
+      .info2 {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        margin: 10px;
+      }
+      .addQuestion,
+      .deleteTest {
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        width: 300px;
+        border-radius: 12px;
+        margin: 10px;
+        cursor: pointer;
+        border-style: solid;
+        border-width: thin;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+      }
+      .ok,
+      .cancel {
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        width: 300px;
+        border-radius: 12px;
+        margin: 10px;
+        cursor: pointer;
+        border-style: solid;
+        border-width: thin;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+      }
+      .deleteTest {
+        color: rgb(249, 36, 36);
+        background-color: white;
+      }
+      .ok {
+        color: white;
+        background-color: rgb(19, 183, 19);
+      }
+      .cancel {
+        background-color: white;
+      }
+      .addQuestion {
+        background-color: white;
+        color: rgb(20, 154, 20);
+      }
+      .questions {
+        display: flex;
+        margin: 10px;
+        padding: 10px;
+        flex-direction: column;
+      }
+      .newQuestion {
+        display: flex;
+        justify-content: stretch;
+        border-style: solid;
+        border-width: thin;
+        border-radius: 15px;
+        background-color: rgb(238, 238, 238);
+        margin: 10px;
+        padding: 10px;
+        > div {
+          flex-grow: 1;
+        }
+      }
+      .questionNumber {
+        display: flex;
+        margin-left: 15px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+      .mainPart {
+        display: flex;
+        flex-direction: column;
+        margin-left: 15px;
+      }
+      .deleteQuestion {
+        display: flex;
+        margin-left: 15px;
+        justify-content: end;
+        cursor: pointer;
+      }
+      .answers {
+        display: flex;
+        flex-direction: column;
+      }
+      .answerOne,
+      .answerTwo,
+      .answerThree,
+      .answerFour {
+        display: flex;
+        flex-direction: row;
+        p {
+          margin-left: 15px;
+        }
+      }
+      .titleQuastion {
+        display: flex;
+      }
+      #questionTitle {
+        height: 40px;
+        width: 100%;
+        border-radius: 7px;
+        font-size: 18px;
+      }
+      #firstAnswer,
+      #secondAnswer,
+      #thirdAnswer,
+      #fourthAnswer {
+        width: 400px;
+        height: 22px;
+        border-radius: 5px;
+        border-style: solid;
+        border-width: thin;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="logo"><img src="logoadmin.png" alt="Logo" /></div>
+    <div class="fullTest">
+      <div class="title">
+        <input type="text" name="title" placeholder="Введите название теста" id="myName" />
+      </div>
+      <div class="info">
+        <div class="info1">
+          <p>Сложность (необходимое количество ответов)</p>
+          <input type="range" min="0" max="12" step="1" value="10" class="slider" id="myRange" />
+          <p>Значение: <span id="valueRange"></span></p>
+        </div>
+        <div class="info2">
+          <p>Время на прохождение теста</p>
+          <input type="number" min="5" max="45" step="5" value="10" class="time" id="myTime" />
+        </div>
+      </div>
+      <div class="questions"></div>
+      <div class="addQuestion">Добавить вопрос</div>
+      <div class="buttons">
+        <div class="cancel">Отмена</div>
+        <div class="ok">ОК</div>
+      </div>
+      <div class="deleteTest">Удалить тест</div>
+    </div>
+    <template id="newQuestion">
+      <div class="newQuestion">
+        <div class="questionNumber">1.</div>
+        <div class="mainPart">
+          <div class="titleQuastion">
+            <textarea name="questionTitle" placeholder="Введите название вопроса" id="questionTitle"></textarea>
+          </div>
+          <div class="answers">
+            <div class="answerOne">
+              <p>1.</p>
+              <p>
+                <input type="text" name="firstAnswer" placeholder="Введите первый ответ" />
+              </p>
+              <p>
+                <input type="checkbox" name="firstLabel" class="form-control" value="firstAnswerValue" />
+              </p>
+            </div>
+            <div class="answerTwo">
+              <p>2.</p>
+              <p>
+                <input type="text" name="secondAnswer" placeholder="Введите второй ответ" />
+              </p>
+              <p>
+                <input type="checkbox" name="secondLabel" class="form-control" value="secondAnswerValue" />
+              </p>
+            </div>
+            <div class="answerThree">
+              <p>3.</p>
+              <p>
+                <input type="text" name="thirdAnswer" placeholder="Введите третий ответ" />
+              </p>
+              <p>
+                <input type="checkbox" name="thirdLabel" class="form-control" value="thirdAnswerValue" />
+              </p>
+            </div>
+            <div class="answerFour">
+              <p>4.</p>
+              <p>
+                <input type="text" name="fourthAnswer" placeholder="Введите четвертый ответ" />
+              </p>
+              <p>
+                <input type="checkbox" name="fourthLabel" class="form-control" value="fourthAnswerValue" />
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="deleteQuestion">Х</div>
+      </div>
+    </template>
+    <script>
+      const id = location.search.replace('?', '').replace('id=', '');
+      const questionsContainer = document.querySelector('.questions');
+      const questionElementTemplate = document.getElementById('newQuestion').content.firstElementChild;
+      const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
+
+      const testToEdit = tests.find((t) => t.id === id);
+      const index = tests.findIndex((t) => t.id === id);
+
+      document.querySelector('[name="title"]').value = testToEdit.name;
+      document.querySelector('.slider').value = testToEdit.difficult;
+      document.querySelector('.time').value = testToEdit.timer;
+      for (let i = 0; i < testToEdit.mainPart.length; i++) {
+        const question = testToEdit.mainPart[i];
+        const questionElement = questionElementTemplate.cloneNode(true);
+        const questionNumber = questionElement.querySelector('.questionNumber');
+        const questionName = questionElement.querySelector('[name="questionTitle"]');
+        const questionAnswerOne = questionElement.querySelector('[name="firstAnswer"]');
+        const questionAnswerTwo = questionElement.querySelector('[name="secondAnswer"]');
+        const questionAnswerThree = questionElement.querySelector('[name="thirdAnswer"]');
+        const questionAnswerFour = questionElement.querySelector('[name="fourthAnswer"]');
+        const questionLabelOne = questionElement.querySelector('[name="firstLabel"]');
+        const questionLabelTwo = questionElement.querySelector('[name="secondLabel"]');
+        const questionLabelThree = questionElement.querySelector('[name="thirdLabel"]');
+        const questionLabelFour = questionElement.querySelector('[name="fourthLabel"]');
+        questionNumber.innerHTML = i + 1 + '.';
+        questionName.value = question.name;
+        questionAnswerOne.value = question.answerOne;
+        questionAnswerTwo.value = question.answerTwo;
+        questionAnswerThree.value = question.answerThree;
+        questionAnswerFour.value = question.answerFour;
+        questionLabelOne.checked = question.labelOne;
+        questionLabelTwo.checked = question.labelTwo;
+        questionLabelThree.checked = question.labelThree;
+        questionLabelFour.checked = question.labelFour;
+        questionsContainer.appendChild(questionElement);
+        questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
+          questionElement.remove();
+          for (let i = 0; i < questionsContainer.children.length; i++) {
+            const questionNumberChange = questionsContainer.children.item(i).querySelector('.questionNumber');
+            questionNumberChange.innerHTML = i + 1 + '.';
+          }
+        });
+      }
+
+      const questions = [];
+      const questionsElements = [];
+
+      document.querySelector('.addQuestion').addEventListener('click', () => {
+        const questionElement = questionElementTemplate.cloneNode(true);
+        const numberQuestion = questionElement.querySelector('.questionNumber');
+        for (let i = 0; i < questionsContainer.children.length; i++) {
+          const countQuestions = questionsContainer.children.length;
+          numberQuestion.innerHTML = countQuestions + 1 + '.';
+        }
+        questionsContainer.appendChild(questionElement);
+        questionsElements.push(questionElement);
+        questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
+          questionElement.remove();
+          for (let i = 0; i < questionsContainer.children.length; i++) {
+            const questionNumberChange = questionsContainer.children.item(i).querySelector('.questionNumber');
+            questionNumberChange.innerHTML = i + 1 + '.';
+          }
+        });
+      });
+      document.querySelector('.cancel').addEventListener('click', () => {
+        document.location = 'admin.html';
+      });
+      document.querySelector('.ok').addEventListener('click', () => {
+        const readyTest = {};
+        const testName = document.querySelector('[name="title"]').value;
+        for (let i = 0; i < questionsContainer.children.length; i++) {
+          const questionElement = questionsContainer.children.item(i);
+          const question = {};
+          question.name = questionElement.querySelector('[name="questionTitle"]').value;
+          question.answerOne = questionElement.querySelector('[name="firstAnswer"]').value;
+          question.answerTwo = questionElement.querySelector('[name="secondAnswer"]').value;
+          question.answerThree = questionElement.querySelector('[name="thirdAnswer"]').value;
+          question.answerFour = questionElement.querySelector('[name="fourthAnswer"]').value;
+          question.labelOne = questionElement.querySelector('[name="firstLabel"]').checked;
+          question.labelTwo = questionElement.querySelector('[name="secondLabel"]').checked;
+          question.labelThree = questionElement.querySelector('[name="thirdLabel"]').checked;
+          question.labelFour = questionElement.querySelector('[name="fourthLabel"]').checked;
+          questions.push(question);
+        }
+        readyTest.name = testName;
+        readyTest.questions = questionsContainer.children.length;
+        readyTest.difficult = slider.value;
+        readyTest.timer = timerOutput;
+        readyTest.mainPart = questions;
+        readyTest.id = id;
+        tests[index] = readyTest;
+        localStorage.setItem('oleg', JSON.stringify(tests));
+        document.location = 'admin.html';
+      });
+
+      document.querySelector('.deleteTest').addEventListener('click', () => {
+        if (confirm('Are you sure you want to delete the test?')) {
+          tests.splice(index, 1);
+          localStorage.setItem('oleg', JSON.stringify(tests));
+          document.location = 'admin.html';
+        }
+      });
+
+      // Отображение ползунка
+      const slider = document.getElementById('myRange');
+      const output = document.getElementById('valueRange');
+      output.innerHTML = slider.value;
+      slider.oninput = function () {
+        output.innerHTML = this.value;
+      };
+      // Получение значения времени
+      const timer = document.getElementById('myTime');
+      timerOutput = timer.value;
+      timer.oninput = function () {
+        timerOutput = this.value;
+      };
+    </script>
+  </body>
+</html>

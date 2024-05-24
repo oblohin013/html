@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin page</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: stretch;
+        align-items: stretch;
+        font-family: Arial, Helvetica, sans-serif;
+        flex-direction: column;
+      }
+      .finishedTests {
+        background-color: rgb(247, 246, 246);
+        display: flex;
+        justify-content: stretch;
+        flex-direction: column;
+        > div {
+          flex-grow: 1;
+        }
+      }
+      .createTest {
+        height: 70px;
+        width: 300px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: lightgreen;
+        border-radius: 20px;
+        cursor: pointer;
+        padding: 10px;
+        margin: 10px;
+      }
+      .test {
+        display: flex;
+        justify-content: space-between;
+        background-color: rgb(238, 238, 238);
+        border-radius: 20px;
+        padding: 10px;
+        margin: 10px;
+        border-style: solid;
+        border-width: thin;
+      }
+      .mainPart {
+        display: flex;
+        flex-direction: column;
+        align-content: start;
+      }
+      .title {
+        display: flex;
+        flex-direction: row;
+        align-self: self-start;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        padding-top: 10px;
+        padding-left: 20px;
+      }
+      .icons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .questions,
+      .answers {
+        padding: 5px;
+        margin: 1px;
+        display: flex;
+        flex-direction: row;
+        height: 30px;
+      }
+      .questionsP,
+      .answersP,
+      .testTitle {
+        padding-left: 20px;
+        display: flex;
+        text-decoration: underline;
+        font-weight: bold;
+      }
+      .edit {
+        padding-top: 10px;
+      }
+      .delete {
+        cursor: pointer;
+        border: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="logo"><img src="logoadmin.png" alt="Logo" /></div>
+    <div class="finishedTests"></div>
+    <div class="createTest">Create a new test</div>
+    <template id="newTest">
+      <div class="test">
+        <div class="mainPart">
+          <div class="title">
+            <p>Test №</p>
+            <p class="testNumber"></p>
+            <p class="testTitle">kdgakgckaclagkcgak</p>
+          </div>
+          <div class="questions">
+            <p>Total number of questions</p>
+            <p class="questionsP">10</p>
+          </div>
+          <div class="answers">
+            <p>Necessary number of answers</p>
+            <p class="answersP">8</p>
+          </div>
+        </div>
+        <div class="icons">
+          <button type="button" class="delete">
+            <img src="closeicon1.png" />
+          </button>
+          <a class="edit" href="/"> <img src="pencilicon1.png" /> </a>
+        </div>
+      </div>
+    </template>
+    <script>
+      const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
+      const testsContainer = document.querySelector('.finishedTests');
+      const testElementTemplate = document.getElementById('newTest').content.firstElementChild;
+      document.querySelector('.createTest').addEventListener('click', () => {
+        document.location = 'add1.html';
+      });
+      //console.log(tests);
+
+      for (let i = 0; i < tests.length; i++) {
+        const test = tests[i];
+        const testElement = testElementTemplate.cloneNode(true);
+        const testName = testElement.querySelector('.testTitle');
+        const testQuestions = testElement.querySelector('.questionsP');
+        const testAnswers = testElement.querySelector('.answersP');
+        const testNumber = testElement.querySelector('.testNumber');
+        const editButton = testElement.querySelector('.edit');
+
+        editButton.href = `/edit.html?id=${test.id}`;
+
+        testName.innerHTML = test.name;
+        testQuestions.innerHTML = test.questions;
+        testAnswers.innerHTML = test.difficult;
+        testNumber.innerHTML = i + 1 + '.';
+        testsContainer.appendChild(testElement);
+        testElement.querySelector('.delete').onclick = () => {
+          if (confirm('Are you sure you want to delete the test?')) {
+            tests.splice(i, 1);
+            localStorage.setItem('oleg', JSON.stringify(tests));
+            window.location.reload();
+          }
+        };
+      }
+    </script>
+  </body>
+</html>
