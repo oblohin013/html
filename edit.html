@@ -71,6 +71,22 @@
         text-transform: uppercase;
         letter-spacing: 5px;
       }
+      .addAnswer {
+        display: flex;
+        align-self: center;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        width: 300px;
+        border-radius: 12px;
+        margin: 10px;
+        cursor: pointer;
+        border-style: solid;
+        border-width: thin;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        background-color: rgb(224, 223, 223);
+      }
       .ok,
       .cancel {
         display: flex;
@@ -142,16 +158,19 @@
         display: flex;
         flex-direction: column;
       }
-      .answerOne,
-      .answerTwo,
-      .answerThree,
-      .answerFour {
+      .answersBox {
         display: flex;
-        flex-direction: row;
-        p {
+        flex-direction: column;
+        div {
           margin-left: 15px;
         }
       }
+      .newAnswer {
+        display: flex;
+        flex-direction: row;
+        margin: 10px;
+      }
+
       .titleQuastion {
         display: flex;
       }
@@ -161,10 +180,7 @@
         border-radius: 7px;
         font-size: 18px;
       }
-      #firstAnswer,
-      #secondAnswer,
-      #thirdAnswer,
-      #fourthAnswer {
+      input[name='answerTitle'] {
         width: 400px;
         height: 22px;
         border-radius: 5px;
@@ -206,51 +222,29 @@
             <textarea name="questionTitle" placeholder="Введите название вопроса" id="questionTitle"></textarea>
           </div>
           <div class="answers">
-            <div class="answerOne">
-              <p>1.</p>
-              <p>
-                <input type="text" name="firstAnswer" placeholder="Введите первый ответ" />
-              </p>
-              <p>
-                <input type="checkbox" name="firstLabel" class="form-control" value="firstAnswerValue" />
-              </p>
-            </div>
-            <div class="answerTwo">
-              <p>2.</p>
-              <p>
-                <input type="text" name="secondAnswer" placeholder="Введите второй ответ" />
-              </p>
-              <p>
-                <input type="checkbox" name="secondLabel" class="form-control" value="secondAnswerValue" />
-              </p>
-            </div>
-            <div class="answerThree">
-              <p>3.</p>
-              <p>
-                <input type="text" name="thirdAnswer" placeholder="Введите третий ответ" />
-              </p>
-              <p>
-                <input type="checkbox" name="thirdLabel" class="form-control" value="thirdAnswerValue" />
-              </p>
-            </div>
-            <div class="answerFour">
-              <p>4.</p>
-              <p>
-                <input type="text" name="fourthAnswer" placeholder="Введите четвертый ответ" />
-              </p>
-              <p>
-                <input type="checkbox" name="fourthLabel" class="form-control" value="fourthAnswerValue" />
-              </p>
-            </div>
+            <div class="answersBox"></div>
+            <div class="addAnswer">Добавить ответ</div>
           </div>
         </div>
         <div class="deleteQuestion">Х</div>
+      </div>
+    </template>
+    <template id="newAnswer">
+      <div class="newAnswer">
+        <div class="answerNumber">1.</div>
+        <div class="titleAnswer">
+          <input type="text" name="answerTitle" placeholder="Введите вариант ответа" />
+        </div>
+        <div class="meaning">
+          <input type="checkbox" name="label" class="form-control" value="answerValue" />
+        </div>
       </div>
     </template>
     <script>
       const id = location.search.replace('?', '').replace('id=', '');
       const questionsContainer = document.querySelector('.questions');
       const questionElementTemplate = document.getElementById('newQuestion').content.firstElementChild;
+      const answerElementTemplate = document.getElementById('newAnswer').content.firstElementChild;
       const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
 
       const testToEdit = tests.find((t) => t.id === id);
@@ -262,27 +256,35 @@
       for (let i = 0; i < testToEdit.mainPart.length; i++) {
         const question = testToEdit.mainPart[i];
         const questionElement = questionElementTemplate.cloneNode(true);
+        const answersContainer = questionElement.querySelector('.answersBox');
         const questionNumber = questionElement.querySelector('.questionNumber');
         const questionName = questionElement.querySelector('[name="questionTitle"]');
-        const questionAnswerOne = questionElement.querySelector('[name="firstAnswer"]');
-        const questionAnswerTwo = questionElement.querySelector('[name="secondAnswer"]');
-        const questionAnswerThree = questionElement.querySelector('[name="thirdAnswer"]');
-        const questionAnswerFour = questionElement.querySelector('[name="fourthAnswer"]');
-        const questionLabelOne = questionElement.querySelector('[name="firstLabel"]');
-        const questionLabelTwo = questionElement.querySelector('[name="secondLabel"]');
-        const questionLabelThree = questionElement.querySelector('[name="thirdLabel"]');
-        const questionLabelFour = questionElement.querySelector('[name="fourthLabel"]');
         questionNumber.innerHTML = i + 1 + '.';
         questionName.value = question.name;
-        questionAnswerOne.value = question.answerOne;
-        questionAnswerTwo.value = question.answerTwo;
-        questionAnswerThree.value = question.answerThree;
-        questionAnswerFour.value = question.answerFour;
-        questionLabelOne.checked = question.labelOne;
-        questionLabelTwo.checked = question.labelTwo;
-        questionLabelThree.checked = question.labelThree;
-        questionLabelFour.checked = question.labelFour;
+
+        for (let j = 0; j < question.answers.length; j++) {
+          const answer = question.answers[j];
+          const answerElement = answerElementTemplate.cloneNode(true);
+          const answerNumber = answerElement.querySelector('.answerNumber');
+          const answerName = answerElement.querySelector('[name="answerTitle"]');
+          const answerLabel = answerElement.querySelector('[name="label"]');
+          answerNumber.innerHTML = j + 1 + '.';
+          answerName.value = answer.name;
+          answerLabel.checked = answer.label;
+          answersContainer.appendChild(answerElement);
+        }
+
         questionsContainer.appendChild(questionElement);
+        questionElement.querySelector('.addAnswer').addEventListener('click', () => {
+          const answerElement = answerElementTemplate.cloneNode(true);
+          const answerNumber = answerElement.querySelector('.answerNumber');
+          for (let j = 0; j < answersContainer.children.length; j++) {
+            const countAnswers = answersContainer.children.length;
+            answerNumber.innerHTML = countAnswers + 1 + '.';
+          }
+          answersContainer.appendChild(answerElement);
+          answersElements.push(answerElement);
+        });
         questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
           questionElement.remove();
           for (let i = 0; i < questionsContainer.children.length; i++) {
@@ -297,6 +299,7 @@
 
       document.querySelector('.addQuestion').addEventListener('click', () => {
         const questionElement = questionElementTemplate.cloneNode(true);
+        const answersContainer = questionElement.querySelector('.answersBox');
         const numberQuestion = questionElement.querySelector('.questionNumber');
         for (let i = 0; i < questionsContainer.children.length; i++) {
           const countQuestions = questionsContainer.children.length;
@@ -304,6 +307,18 @@
         }
         questionsContainer.appendChild(questionElement);
         questionsElements.push(questionElement);
+
+        questionElement.querySelector('.addAnswer').addEventListener('click', () => {
+          const answerElement = answerElementTemplate.cloneNode(true);
+          const answerNumber = answerElement.querySelector('.answerNumber');
+          for (let j = 0; j < answersContainer.children.length; j++) {
+            const countAnswers = answersContainer.children.length;
+            answerNumber.innerHTML = countAnswers + 1 + '.';
+          }
+          answersContainer.appendChild(answerElement);
+          answersElements.push(answerElement);
+        });
+
         questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
           questionElement.remove();
           for (let i = 0; i < questionsContainer.children.length; i++) {
@@ -320,16 +335,18 @@
         const testName = document.querySelector('[name="title"]').value;
         for (let i = 0; i < questionsContainer.children.length; i++) {
           const questionElement = questionsContainer.children.item(i);
+          const answersContainer = questionElement.querySelector('.answersBox');
           const question = {};
+          const answers = [];
           question.name = questionElement.querySelector('[name="questionTitle"]').value;
-          question.answerOne = questionElement.querySelector('[name="firstAnswer"]').value;
-          question.answerTwo = questionElement.querySelector('[name="secondAnswer"]').value;
-          question.answerThree = questionElement.querySelector('[name="thirdAnswer"]').value;
-          question.answerFour = questionElement.querySelector('[name="fourthAnswer"]').value;
-          question.labelOne = questionElement.querySelector('[name="firstLabel"]').checked;
-          question.labelTwo = questionElement.querySelector('[name="secondLabel"]').checked;
-          question.labelThree = questionElement.querySelector('[name="thirdLabel"]').checked;
-          question.labelFour = questionElement.querySelector('[name="fourthLabel"]').checked;
+          for (let j = 0; j < answersContainer.children.length; j++) {
+            const answerElement = answersContainer.children.item(j);
+            const answer = {};
+            answer.name = answerElement.querySelector('[name="answerTitle"]').value;
+            answer.label = answerElement.querySelector('[name="label"]').checked;
+            answers.push(answer);
+          }
+          question.answers = answers;
           questions.push(question);
         }
         readyTest.name = testName;
