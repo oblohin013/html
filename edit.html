@@ -7,7 +7,7 @@
     <style>
       body {
         display: flex;
-        align-items: stretch;
+        align-items: center;
         font-family: Arial, Helvetica, sans-serif;
         flex-direction: column;
       }
@@ -16,13 +16,13 @@
       }
       .fullTest {
         background-color: rgb(247, 246, 246);
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
         display: flex;
         flex-direction: column;
-        border-style: solid;
-        border-width: thin;
         padding: 10px;
         margin: 10px;
-        border-radius: 15px;
+        max-width: 1000px;
+        border-radius: 5px;
       }
       .title {
         display: flex;
@@ -31,9 +31,14 @@
       #myName {
         font-size: 30px;
         font-weight: bold;
-        border-radius: 12px;
-        border-width: thin;
         text-align: center;
+        box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+        border: none;
+        outline: none;
+          flex-grow: 1;
+          margin: 10px;
+          border-radius: 3px;
+          padding: 5px;
       }
       #myTime {
         height: 30px;
@@ -55,7 +60,69 @@
         padding: 10px;
         margin: 10px;
       }
-      .addQuestion,
+
+
+      .addQuestion {
+          box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+          background-color: rgb(238, 238, 238);
+          margin: 27px;
+          padding: 16px;
+          display: flex;
+          justify-content: stretch;
+          border: 2px lightgray dashed;
+          color: darkgray;
+          cursor: pointer;
+          transition: scale 0.4s, background-color 0.4s;
+          flex-direction: column;
+      }
+
+      .addQuestion__header {
+          display: flex;
+          gap: 10px;
+          margin-bottom: 10px;
+      }
+
+      .addQuestion__header-index {
+          display: flex;
+          margin-left: 15px;
+          font-size: 20px;
+          font-weight: bold;
+      }
+
+      .addQuestion:hover {
+          background-color: rgb(234, 233, 233);
+          scale: 1.02;
+      }
+
+      .addQuestion .titleQuastion {
+          font-size: 20px;
+      }
+
+      .addQuestion__answer {
+          display: flex;
+          flex-direction: row;
+          gap: 10px;
+          margin-left: 70px;
+          margin-top: 10px;
+          align-items: center;
+      }
+
+      .addQuestion__answer-check {
+          width: 12px;
+          height: 12px;
+          background-color: white;
+          border: 1px solid #6c6c6c;
+          margin-right: 40px;
+      }
+
+      .addQuestion__answer-text_checked {
+          background-color: dimgray;
+      }
+
+      .addQuestion__answer-text {
+          flex-grow: 1;
+      }
+
       .deleteTest {
         display: flex;
         align-self: center;
@@ -107,16 +174,13 @@
         color: rgb(249, 36, 36);
         background-color: white;
       }
+
       .ok {
         color: white;
         background-color: rgb(19, 183, 19);
       }
       .cancel {
         background-color: white;
-      }
-      .addQuestion {
-        background-color: white;
-        color: rgb(20, 154, 20);
       }
       .questions {
         display: flex;
@@ -127,22 +191,22 @@
       .newQuestion {
         display: flex;
         justify-content: stretch;
-        border-style: solid;
-        border-width: thin;
-        border-radius: 15px;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
         background-color: rgb(238, 238, 238);
         margin: 10px;
-        padding: 10px;
+        padding: 16px;
         > div {
           flex-grow: 1;
         }
       }
+
       .questionNumber {
         display: flex;
         margin-left: 15px;
         font-size: 20px;
         font-weight: bold;
       }
+
       .mainPart {
         display: flex;
         flex-direction: column;
@@ -207,7 +271,34 @@
         </div>
       </div>
       <div class="questions"></div>
-      <div class="addQuestion">Добавить вопрос</div>
+      <div class="addQuestion">
+        <div class="addQuestion__header">
+          <div class="addQuestion__header-index">N.</div>
+          <div class="titleQuastion">
+            Как создать ещё один вопрос?
+          </div>
+        </div>
+        <div class="addQuestion__answer">
+          <div class="addQuestion__answer-index">1. </div>
+          <div class="addQuestion__answer-text">Нажми на меня</div>
+          <div class="addQuestion__answer-check"></div>
+        </div>
+        <div class="addQuestion__answer">
+          <div class="addQuestion__answer-index">2. </div>
+          <div class="addQuestion__answer-text">Напиши вопрос</div>
+          <div class="addQuestion__answer-check addQuestion__answer-text_checked"></div>
+        </div>
+        <div class="addQuestion__answer">
+          <div class="addQuestion__answer-index">3. </div>
+          <div class="addQuestion__answer-text">Добавь ответы</div>
+          <div class="addQuestion__answer-check"></div>
+        </div>
+        <div class="addQuestion__answer">
+          <div class="addQuestion__answer-index">4. </div>
+          <div class="addQuestion__answer-text">Отметь верные</div>
+          <div class="addQuestion__answer-check addQuestion__answer-text_checked"></div>
+        </div>
+      </div>
       <div class="buttons">
         <div class="cancel">Отмена</div>
         <div class="ok">ОК</div>

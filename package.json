@@ -1,0 +1,17 @@
+{
+  "name": "html",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "static-server -p 3000"
+  },
+  "devDependencies": {
+    "static-server": "^2.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/oblohin013/html.git"
+  },
+  "private": true
+}
