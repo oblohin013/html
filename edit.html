@@ -307,6 +307,7 @@
         }
         questionsContainer.appendChild(questionElement);
         questionsElements.push(questionElement);
+        slider.setAttribute('max', questionsContainer.children.length);
 
         questionElement.querySelector('.addAnswer').addEventListener('click', () => {
           const answerElement = answerElementTemplate.cloneNode(true);
@@ -321,6 +322,8 @@
 
         questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
           questionElement.remove();
+          slider.setAttribute('max', questionsContainer.children.length);
+          output.innerHTML = slider.value;
           for (let i = 0; i < questionsContainer.children.length; i++) {
             const questionNumberChange = questionsContainer.children.item(i).querySelector('.questionNumber');
             questionNumberChange.innerHTML = i + 1 + '.';
@@ -374,6 +377,10 @@
       output.innerHTML = slider.value;
       slider.oninput = function () {
         output.innerHTML = this.value;
+        if (this.value < 1) {
+          this.value = 1;
+          output.innerHTML = this.value;
+        }
       };
       // Получение значения времени
       const timer = document.getElementById('myTime');
