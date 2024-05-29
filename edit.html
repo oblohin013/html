@@ -198,7 +198,7 @@
       <div class="info">
         <div class="info1">
           <p>Сложность (необходимое количество ответов)</p>
-          <input type="range" min="0" max="12" step="1" value="10" class="slider" id="myRange" />
+          <input type="range" min="0" max="1" step="1" value="1" class="slider" id="myRange" />
           <p>Значение: <span id="valueRange"></span></p>
         </div>
         <div class="info2">
@@ -246,6 +246,18 @@
       const questionElementTemplate = document.getElementById('newQuestion').content.firstElementChild;
       const answerElementTemplate = document.getElementById('newAnswer').content.firstElementChild;
       const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
+
+      // Отображение ползунка
+      const slider = document.querySelector('.slider');
+      const output = document.getElementById('valueRange');
+      output.innerHTML = slider.value;
+      slider.oninput = function () {
+        output.innerHTML = this.value;
+        if (this.value < 1) {
+          this.value = 1;
+          output.innerHTML = this.value;
+        }
+      };
 
       const testToEdit = tests.find((t) => t.id === id);
       const index = tests.findIndex((t) => t.id === id);
@@ -296,6 +308,10 @@
 
       const questions = [];
       const questionsElements = [];
+      const syncSliderWithQuestions = () => {
+        slider.setAttribute('max', questionsContainer.children.length);
+      };
+      syncSliderWithQuestions();
 
       document.querySelector('.addQuestion').addEventListener('click', () => {
         const questionElement = questionElementTemplate.cloneNode(true);
@@ -307,7 +323,7 @@
         }
         questionsContainer.appendChild(questionElement);
         questionsElements.push(questionElement);
-        slider.setAttribute('max', questionsContainer.children.length);
+        syncSliderWithQuestions();
 
         questionElement.querySelector('.addAnswer').addEventListener('click', () => {
           const answerElement = answerElementTemplate.cloneNode(true);
@@ -322,7 +338,7 @@
 
         questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
           questionElement.remove();
-          slider.setAttribute('max', questionsContainer.children.length);
+          syncSliderWithQuestions();
           output.innerHTML = slider.value;
           for (let i = 0; i < questionsContainer.children.length; i++) {
             const questionNumberChange = questionsContainer.children.item(i).querySelector('.questionNumber');
@@ -371,17 +387,6 @@
         }
       });
 
-      // Отображение ползунка
-      const slider = document.getElementById('myRange');
-      const output = document.getElementById('valueRange');
-      output.innerHTML = slider.value;
-      slider.oninput = function () {
-        output.innerHTML = this.value;
-        if (this.value < 1) {
-          this.value = 1;
-          output.innerHTML = this.value;
-        }
-      };
       // Получение значения времени
       const timer = document.getElementById('myTime');
       timerOutput = timer.value;

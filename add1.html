@@ -248,8 +248,10 @@
       const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
       const questions = [];
       const questionsElements = [];
-
       const answersElements = [];
+      const syncSliderWithQuestions = () => {
+        slider.setAttribute('max', questionsContainer.children.length);
+      };
 
       document.querySelector('.addQuestion').addEventListener('click', () => {
         const questionElement = questionElementTemplate.cloneNode(true);
@@ -261,7 +263,7 @@
         }
         questionsContainer.appendChild(questionElement);
         questionsElements.push(questionElement);
-        slider.setAttribute('max', questionsContainer.children.length);
+        syncSliderWithQuestions();
 
         questionElement.querySelector('.addAnswer').addEventListener('click', () => {
           const answerElement = answerElementTemplate.cloneNode(true);
@@ -276,7 +278,7 @@
 
         questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
           questionElement.remove();
-          slider.setAttribute('max', questionsContainer.children.length);
+          syncSliderWithQuestions();
           output.innerHTML = slider.value;
           for (let i = 0; i < questionsContainer.children.length; i++) {
             const questionNumberChange = questionsContainer.children.item(i).querySelector('.questionNumber');
