@@ -203,7 +203,7 @@
         </div>
         <div class="info2">
           <p>Время на прохождение теста</p>
-          <input type="number" min="5" max="45" step="5" value="10" class="time" id="myTime" />
+          <input type="number" min="5" max="45" step="5" value="10" class="time" id="myTime" onkeyup="enforceMinMax(this)" />
         </div>
       </div>
       <div class="questions"></div>
@@ -343,6 +343,16 @@
       timer.addEventListener('input', (e) => {
         timerOutput = e.target.value;
       });
+      function enforceMinMax(el) {
+        if (el.value != '') {
+          if (parseInt(el.value) < parseInt(el.min)) {
+            el.value = el.min;
+          }
+          if (parseInt(el.value) > parseInt(el.max)) {
+            el.value = el.max;
+          }
+        }
+      }
     </script>
   </body>
 </html>
