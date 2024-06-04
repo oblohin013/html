@@ -35,10 +35,10 @@
         box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
         border: none;
         outline: none;
-          flex-grow: 1;
-          margin: 10px;
-          border-radius: 3px;
-          padding: 5px;
+        flex-grow: 1;
+        margin: 10px;
+        border-radius: 3px;
+        padding: 5px;
       }
       #myTime {
         height: 30px;
@@ -61,66 +61,65 @@
         margin: 10px;
       }
 
-
       .addQuestion {
-          box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-          background-color: rgb(238, 238, 238);
-          margin: 27px;
-          padding: 16px;
-          display: flex;
-          justify-content: stretch;
-          border: 2px lightgray dashed;
-          color: darkgray;
-          cursor: pointer;
-          transition: scale 0.4s, background-color 0.4s;
-          flex-direction: column;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        background-color: rgb(238, 238, 238);
+        margin: 27px;
+        padding: 16px;
+        display: flex;
+        justify-content: stretch;
+        border: 2px lightgray dashed;
+        color: darkgray;
+        cursor: pointer;
+        transition: scale 0.4s, background-color 0.4s;
+        flex-direction: column;
       }
 
       .addQuestion__header {
-          display: flex;
-          gap: 10px;
-          margin-bottom: 10px;
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
       }
 
       .addQuestion__header-index {
-          display: flex;
-          margin-left: 15px;
-          font-size: 20px;
-          font-weight: bold;
+        display: flex;
+        margin-left: 15px;
+        font-size: 20px;
+        font-weight: bold;
       }
 
       .addQuestion:hover {
-          background-color: rgb(234, 233, 233);
-          scale: 1.02;
+        background-color: rgb(234, 233, 233);
+        scale: 1.02;
       }
 
       .addQuestion .titleQuastion {
-          font-size: 20px;
+        font-size: 20px;
       }
 
       .addQuestion__answer {
-          display: flex;
-          flex-direction: row;
-          gap: 10px;
-          margin-left: 70px;
-          margin-top: 10px;
-          align-items: center;
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+        margin-left: 70px;
+        margin-top: 10px;
+        align-items: center;
       }
 
       .addQuestion__answer-check {
-          width: 12px;
-          height: 12px;
-          background-color: white;
-          border: 1px solid #6c6c6c;
-          margin-right: 40px;
+        width: 12px;
+        height: 12px;
+        background-color: white;
+        border: 1px solid #6c6c6c;
+        margin-right: 40px;
       }
 
       .addQuestion__answer-text_checked {
-          background-color: dimgray;
+        background-color: dimgray;
       }
 
       .addQuestion__answer-text {
-          flex-grow: 1;
+        flex-grow: 1;
       }
 
       .deleteTest {
@@ -274,27 +273,25 @@
       <div class="addQuestion">
         <div class="addQuestion__header">
           <div class="addQuestion__header-index">N.</div>
-          <div class="titleQuastion">
-            Как создать ещё один вопрос?
-          </div>
+          <div class="titleQuastion">Как создать ещё один вопрос?</div>
         </div>
         <div class="addQuestion__answer">
-          <div class="addQuestion__answer-index">1. </div>
+          <div class="addQuestion__answer-index">1.</div>
           <div class="addQuestion__answer-text">Нажми на меня</div>
           <div class="addQuestion__answer-check"></div>
         </div>
         <div class="addQuestion__answer">
-          <div class="addQuestion__answer-index">2. </div>
+          <div class="addQuestion__answer-index">2.</div>
           <div class="addQuestion__answer-text">Напиши вопрос</div>
           <div class="addQuestion__answer-check addQuestion__answer-text_checked"></div>
         </div>
         <div class="addQuestion__answer">
-          <div class="addQuestion__answer-index">3. </div>
+          <div class="addQuestion__answer-index">3.</div>
           <div class="addQuestion__answer-text">Добавь ответы</div>
           <div class="addQuestion__answer-check"></div>
         </div>
         <div class="addQuestion__answer">
-          <div class="addQuestion__answer-index">4. </div>
+          <div class="addQuestion__answer-index">4.</div>
           <div class="addQuestion__answer-text">Отметь верные</div>
           <div class="addQuestion__answer-check addQuestion__answer-text_checked"></div>
         </div>
@@ -339,7 +336,7 @@
       const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
 
       // Отображение ползунка
-      const slider = document.querySelector('.slider');
+      const slider = document.getElementById('myRange');
       const output = document.getElementById('valueRange');
       output.innerHTML = slider.value;
       slider.oninput = function () {
@@ -354,7 +351,10 @@
       const index = tests.findIndex((t) => t.id === id);
 
       document.querySelector('[name="title"]').value = testToEdit.name;
-      document.querySelector('.slider').value = testToEdit.difficult;
+      //document.querySelector('.slider').value = testToEdit.difficult;
+      slider.value = testToEdit.difficult;
+      console.log(testToEdit.difficult);
+      console.log(testToEdit.timer);
       document.querySelector('.time').value = testToEdit.timer;
       for (let i = 0; i < testToEdit.mainPart.length; i++) {
         const question = testToEdit.mainPart[i];
