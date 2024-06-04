@@ -330,19 +330,19 @@
       const slider = document.getElementById('myRange');
       const output = document.getElementById('valueRange');
       output.innerHTML = slider.value;
-      slider.oninput = function () {
-        output.innerHTML = this.value;
-        if (this.value < 1) {
-          this.value = 1;
-          output.innerHTML = this.value;
+      slider.addEventListener('input', (e) => {
+        output.innerHTML = e.target.value;
+        if (e.target.value < 1) {
+          e.target.value = 1;
+          output.innerHTML = e.target.value;
         }
-      };
+      });
       // Получение значения времени
       const timer = document.getElementById('myTime');
       timerOutput = timer.value;
-      timer.oninput = function () {
-        timerOutput = this.value;
-      };
+      timer.addEventListener('input', (e) => {
+        timerOutput = e.target.value;
+      });
     </script>
   </body>
 </html>

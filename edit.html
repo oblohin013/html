@@ -261,7 +261,7 @@
       <div class="info">
         <div class="info1">
           <p>Сложность (необходимое количество ответов)</p>
-          <input type="range" min="0" max="1" step="1" value="1" class="slider" id="myRange" />
+          <input type="range" name="myRange" min="0" max="1" step="1" value="1" class="slider" id="myRange" />
           <p>Значение: <span id="valueRange"></span></p>
         </div>
         <div class="info2">
@@ -335,27 +335,33 @@
       const answerElementTemplate = document.getElementById('newAnswer').content.firstElementChild;
       const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
 
-      // Отображение ползунка
-      const slider = document.getElementById('myRange');
-      const output = document.getElementById('valueRange');
-      output.innerHTML = slider.value;
-      slider.oninput = function () {
-        output.innerHTML = this.value;
-        if (this.value < 1) {
-          this.value = 1;
-          output.innerHTML = this.value;
-        }
-      };
-
       const testToEdit = tests.find((t) => t.id === id);
       const index = tests.findIndex((t) => t.id === id);
 
       document.querySelector('[name="title"]').value = testToEdit.name;
-      //document.querySelector('.slider').value = testToEdit.difficult;
+      const slider = document.querySelector('[name="myRange"]');
       slider.value = testToEdit.difficult;
-      console.log(testToEdit.difficult);
-      console.log(testToEdit.timer);
       document.querySelector('.time').value = testToEdit.timer;
+
+      // Отображение ползунка
+
+      const output = document.getElementById('valueRange');
+      output.innerHTML = slider.value;
+      slider.addEventListener('input', (e) => {
+        output.innerHTML = e.target.value;
+        if (e.target.value < 1) {
+          e.target.value = 1;
+          output.innerHTML = e.target.value;
+        }
+      });
+
+      // Получение значения времени
+      const timer = document.getElementById('myTime');
+      timerOutput = timer.value;
+      timer.addEventListener('input', (e) => {
+        timerOutput = e.target.value;
+      });
+
       for (let i = 0; i < testToEdit.mainPart.length; i++) {
         const question = testToEdit.mainPart[i];
         const questionElement = questionElementTemplate.cloneNode(true);
@@ -403,6 +409,9 @@
         slider.setAttribute('max', questionsContainer.children.length);
       };
       syncSliderWithQuestions();
+      slider.value = 1;
+      slider.value = testToEdit.difficult;
+      output.innerHTML = slider.value;
 
       document.querySelector('.addQuestion').addEventListener('click', () => {
         const questionElement = questionElementTemplate.cloneNode(true);
@@ -477,13 +486,6 @@
           document.location = 'admin.html';
         }
       });
-
-      // Получение значения времени
-      const timer = document.getElementById('myTime');
-      timerOutput = timer.value;
-      timer.oninput = function () {
-        timerOutput = this.value;
-      };
     </script>
   </body>
 </html>
