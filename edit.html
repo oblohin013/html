@@ -392,7 +392,7 @@
             answerNumber.innerHTML = countAnswers + 1 + '.';
           }
           answersContainer.appendChild(answerElement);
-          answersElements.push(answerElement);
+          //answersElements.push(answerElement);
         });
         questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
           questionElement.remove();
@@ -405,6 +405,7 @@
 
       const questions = [];
       const questionsElements = [];
+      const answersElements = [];
       const syncSliderWithQuestions = () => {
         slider.setAttribute('max', questionsContainer.children.length);
       };
@@ -417,6 +418,11 @@
         const questionElement = questionElementTemplate.cloneNode(true);
         const answersContainer = questionElement.querySelector('.answersBox');
         const numberQuestion = questionElement.querySelector('.questionNumber');
+        const answerElement = answerElementTemplate.cloneNode(true);
+        const answerNumber = answerElement.querySelector('.answerNumber');
+        answerNumber.innerHTML = '1.';
+        answersContainer.appendChild(answerElement);
+        answersElements.push(answerElement);
         for (let i = 0; i < questionsContainer.children.length; i++) {
           const countQuestions = questionsContainer.children.length;
           numberQuestion.innerHTML = countQuestions + 1 + '.';
