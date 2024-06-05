@@ -242,7 +242,6 @@
     </template>
     <script>
       const questionsContainer = document.querySelector('.questions');
-
       const questionElementTemplate = document.getElementById('newQuestion').content.firstElementChild;
       const answerElementTemplate = document.getElementById('newAnswer').content.firstElementChild;
       const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
@@ -282,12 +281,18 @@
         });
 
         questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
-          questionElement.remove();
-          syncSliderWithQuestions();
-          output.innerHTML = slider.value;
           for (let i = 0; i < questionsContainer.children.length; i++) {
-            const questionNumberChange = questionsContainer.children.item(i).querySelector('.questionNumber');
-            questionNumberChange.innerHTML = i + 1 + '.';
+            if (questionsContainer.children.length > 1) {
+              questionElement.remove();
+              syncSliderWithQuestions();
+              output.innerHTML = slider.value;
+              for (let j = 0; j < questionsContainer.children.length; j++) {
+                const questionNumberChange = questionsContainer.children.item(j).querySelector('.questionNumber');
+                questionNumberChange.innerHTML = j + 1 + '.';
+              }
+            } else {
+              alert('You cannot delete all questions from the test');
+            }
           }
         });
       });
