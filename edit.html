@@ -330,20 +330,20 @@
     </template>
     <script>
       const reIndexQuestions = () => {
-        const questionElements = document.querySelectorAll('.newQuestion')
+        const questionElements = document.querySelectorAll('.newQuestion');
 
         questionElements.forEach((questionElement, index) => {
           questionElement.querySelector('.questionNumber').textContent = `${index + 1}.`;
-        })
-      }
+        });
+      };
 
       const reIndexAnswers = (questionElement) => {
-        const answerElements = questionElement.querySelectorAll('.newAnswer')
+        const answerElements = questionElement.querySelectorAll('.newAnswer');
 
         answerElements.forEach((answerElement, index) => {
           answerElement.querySelector('.answerNumber').textContent = `${index + 1}.`;
-        })
-      } 
+        });
+      };
 
       const fillAnswers = (questionElement, question) => {
         const answerElementTemplate = document.getElementById('newAnswer').content.firstElementChild;
@@ -360,14 +360,14 @@
           answersBox.appendChild(answerElement);
         }
 
-        reIndexAnswers(questionElement)
-      }
+        reIndexAnswers(questionElement);
+      };
 
       const fillQuestion = (questionElement, question) => {
         questionElement.querySelector('[name="questionTitle"]').value = question.name;
 
-        fillAnswers(questionElement, question)
-      }
+        fillAnswers(questionElement, question);
+      };
 
       const addQuestion = (question) => {
         const questionsContainer = document.querySelector('.questions');
@@ -377,7 +377,7 @@
         fillQuestion(questionElement, question);
 
         questionsContainer.appendChild(questionElement);
-      }
+      };
 
       const restoreQuestionsFromLocalStorage = () => {
         const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
@@ -389,11 +389,9 @@
         }
 
         reIndexQuestions();
-      }
-
+      };
 
       // restoreQuestionsFromLocalStorage();
-
 
       // throw new Error('stop exec')
 
@@ -538,12 +536,21 @@
       });
 
       // вынести в функцию cancelEdit
-      document.querySelector('.cancel').addEventListener('click', () => {
+      document.querySelector('.cancel').addEventListener('click', () => cancelEdit());
+
+      function cancelEdit() {
         document.location = 'admin.html';
-      });
+      }
 
       // вынести в функцию saveTestToLocalStorage
-      document.querySelector('.ok').addEventListener('click', () => {
+      document.querySelector('.ok').addEventListener('click', () => saveTestToLocalStorage());
+
+      function saveTestToLocalStorage() {
+        const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
+        const testToEdit = tests.find((t) => t.id === id);
+        const index = tests.findIndex((t) => t.id === id);
+
+        const questionsContainer = document.querySelector('.questions');
         const readyTest = {};
         const testName = document.querySelector('[name="title"]').value;
         for (let i = 0; i < questionsContainer.children.length; i++) {
@@ -570,17 +577,23 @@
         readyTest.id = id;
         tests[index] = readyTest;
         localStorage.setItem('oleg', JSON.stringify(tests));
-        document.location = 'admin.html';
-      });
+        cancelEdit();
+      }
 
       // вынести в функцию удалить тест
-      document.querySelector('.deleteTest').addEventListener('click', () => {
+      document.querySelector('.deleteTest').addEventListener('click', () => deleteTestButton());
+
+      function deleteTestButton() {
+        const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
+        const testToEdit = tests.find((t) => t.id === id);
+        const index = tests.findIndex((t) => t.id === id);
         if (confirm('Are you sure you want to delete the test?')) {
           tests.splice(index, 1);
           localStorage.setItem('oleg', JSON.stringify(tests));
-          document.location = 'admin.html';
+          cancelEdit();
         }
-      });
+      }
+
       function enforceMinMax(el) {
         if (el.value != '') {
           if (parseInt(el.value) < parseInt(el.min)) {
