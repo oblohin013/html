@@ -331,7 +331,6 @@
     <script>
       const reIndexQuestions = () => {
         const questionElements = document.querySelectorAll('.newQuestion');
-
         questionElements.forEach((questionElement, index) => {
           questionElement.querySelector('.questionNumber').textContent = `${index + 1}.`;
         });
@@ -339,7 +338,6 @@
 
       const reIndexAnswers = (questionElement) => {
         const answerElements = questionElement.querySelectorAll('.newAnswer');
-
         answerElements.forEach((answerElement, index) => {
           answerElement.querySelector('.answerNumber').textContent = `${index + 1}.`;
         });
@@ -348,24 +346,18 @@
       const fillAnswers = (questionElement, question) => {
         const answerElementTemplate = document.getElementById('newAnswer').content.firstElementChild;
         const answersBox = questionElement.querySelector('.answersBox');
-
         for (let i = 0; i < question.answers.length; i++) {
           const answer = question.answers[i];
-
           const answerElement = answerElementTemplate.cloneNode(true);
-
           answerElement.querySelector('[name="answerTitle"]').value = answer.name;
           answerElement.querySelector('[name="label"]').value = answer.label;
-
           answersBox.appendChild(answerElement);
         }
-
         reIndexAnswers(questionElement);
       };
 
       const fillQuestion = (questionElement, question) => {
         questionElement.querySelector('[name="questionTitle"]').value = question.name;
-
         fillAnswers(questionElement, question);
       };
 
@@ -373,9 +365,7 @@
         const questionsContainer = document.querySelector('.questions');
         const questionElementTemplate = document.getElementById('newQuestion').content.firstElementChild;
         const questionElement = questionElementTemplate.cloneNode(true);
-
         fillQuestion(questionElement, question);
-
         questionsContainer.appendChild(questionElement);
       };
 
@@ -383,13 +373,71 @@
         const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
         const id = location.search.replace('?', '').replace('id=', '');
         const testToEdit = tests.find((t) => t.id === id);
-
         for (let i = 0; i < testToEdit.mainPart.length; i++) {
           addQuestion(testToEdit.mainPart[i]);
         }
-
         reIndexQuestions();
       };
+
+      function saveTestToLocalStorage() {
+        const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
+        const testToEdit = tests.find((t) => t.id === id);
+        const index = tests.findIndex((t) => t.id === id);
+        const questionsContainer = document.querySelector('.questions');
+        const readyTest = {};
+        const testName = document.querySelector('[name="title"]').value;
+        for (let i = 0; i < questionsContainer.children.length; i++) {
+          const questionElement = questionsContainer.children.item(i);
+          const answersContainer = questionElement.querySelector('.answersBox');
+          const question = {};
+          const answers = [];
+          question.name = questionElement.querySelector('[name="questionTitle"]').value;
+          for (let j = 0; j < answersContainer.children.length; j++) {
+            const answerElement = answersContainer.children.item(j);
+            const answer = {};
+            answer.name = answerElement.querySelector('[name="answerTitle"]').value;
+            answer.label = answerElement.querySelector('[name="label"]').checked;
+            answers.push(answer);
+          }
+          question.answers = answers;
+          questions.push(question);
+        }
+        readyTest.name = testName;
+        readyTest.questions = questionsContainer.children.length;
+        readyTest.difficult = slider.value;
+        readyTest.timer = document.querySelector('#myTime').value;
+        readyTest.mainPart = questions;
+        readyTest.id = id;
+        tests[index] = readyTest;
+        localStorage.setItem('oleg', JSON.stringify(tests));
+        cancelEdit();
+      }
+
+      function cancelEdit() {
+        document.location = 'admin.html';
+      }
+
+      function deleteTestButton() {
+        const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
+        const testToEdit = tests.find((t) => t.id === id);
+        const index = tests.findIndex((t) => t.id === id);
+        if (confirm('Are you sure you want to delete the test?')) {
+          tests.splice(index, 1);
+          localStorage.setItem('oleg', JSON.stringify(tests));
+          cancelEdit();
+        }
+      }
+
+      function enforceMinMax(el) {
+        if (el.value != '') {
+          if (parseInt(el.value) < parseInt(el.min)) {
+            el.value = el.min;
+          }
+          if (parseInt(el.value) > parseInt(el.max)) {
+            el.value = el.max;
+          }
+        }
+      }
 
       // restoreQuestionsFromLocalStorage();
 
@@ -467,16 +515,6 @@
             }
           }
         });
-
-        /*
-        questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
-          questionElement.remove();
-          for (let i = 0; i < questionsContainer.children.length; i++) {
-            const questionNumberChange = questionsContainer.children.item(i).querySelector('.questionNumber');
-            questionNumberChange.innerHTML = i + 1 + '.';
-          }
-        });
-        */
       }
 
       const questions = [];
@@ -538,72 +576,11 @@
       // вынести в функцию cancelEdit
       document.querySelector('.cancel').addEventListener('click', () => cancelEdit());
 
-      function cancelEdit() {
-        document.location = 'admin.html';
-      }
-
       // вынести в функцию saveTestToLocalStorage
       document.querySelector('.ok').addEventListener('click', () => saveTestToLocalStorage());
 
-      function saveTestToLocalStorage() {
-        const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
-        const testToEdit = tests.find((t) => t.id === id);
-        const index = tests.findIndex((t) => t.id === id);
-
-        const questionsContainer = document.querySelector('.questions');
-        const readyTest = {};
-        const testName = document.querySelector('[name="title"]').value;
-        for (let i = 0; i < questionsContainer.children.length; i++) {
-          const questionElement = questionsContainer.children.item(i);
-          const answersContainer = questionElement.querySelector('.answersBox');
-          const question = {};
-          const answers = [];
-          question.name = questionElement.querySelector('[name="questionTitle"]').value;
-          for (let j = 0; j < answersContainer.children.length; j++) {
-            const answerElement = answersContainer.children.item(j);
-            const answer = {};
-            answer.name = answerElement.querySelector('[name="answerTitle"]').value;
-            answer.label = answerElement.querySelector('[name="label"]').checked;
-            answers.push(answer);
-          }
-          question.answers = answers;
-          questions.push(question);
-        }
-        readyTest.name = testName;
-        readyTest.questions = questionsContainer.children.length;
-        readyTest.difficult = slider.value;
-        readyTest.timer = document.querySelector('#myTime').value;
-        readyTest.mainPart = questions;
-        readyTest.id = id;
-        tests[index] = readyTest;
-        localStorage.setItem('oleg', JSON.stringify(tests));
-        cancelEdit();
-      }
-
       // вынести в функцию удалить тест
       document.querySelector('.deleteTest').addEventListener('click', () => deleteTestButton());
-
-      function deleteTestButton() {
-        const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
-        const testToEdit = tests.find((t) => t.id === id);
-        const index = tests.findIndex((t) => t.id === id);
-        if (confirm('Are you sure you want to delete the test?')) {
-          tests.splice(index, 1);
-          localStorage.setItem('oleg', JSON.stringify(tests));
-          cancelEdit();
-        }
-      }
-
-      function enforceMinMax(el) {
-        if (el.value != '') {
-          if (parseInt(el.value) < parseInt(el.min)) {
-            el.value = el.min;
-          }
-          if (parseInt(el.value) > parseInt(el.max)) {
-            el.value = el.max;
-          }
-        }
-      }
     </script>
   </body>
 </html>
