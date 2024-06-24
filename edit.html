@@ -379,7 +379,7 @@
         reIndexQuestions();
       };
 
-      function saveTestToLocalStorage() {
+      const saveTestToLocalStorage = () => {
         const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
         const testToEdit = tests.find((t) => t.id === id);
         const index = tests.findIndex((t) => t.id === id);
@@ -411,13 +411,13 @@
         tests[index] = readyTest;
         localStorage.setItem('oleg', JSON.stringify(tests));
         cancelEdit();
-      }
+      };
 
-      function cancelEdit() {
+      const cancelEdit = () => {
         document.location = 'admin.html';
-      }
+      };
 
-      function deleteTestButton() {
+      const deleteTestButton = () => {
         const tests = JSON.parse(localStorage.getItem('oleg') || '[]');
         const testToEdit = tests.find((t) => t.id === id);
         const index = tests.findIndex((t) => t.id === id);
@@ -426,7 +426,15 @@
           localStorage.setItem('oleg', JSON.stringify(tests));
           cancelEdit();
         }
-      }
+      };
+
+      const addAnswerButton = () => {
+        const answerElementTemplate = document.getElementById('newAnswer').content.firstElementChild;
+        const answerElement = answerElementTemplate.cloneNode(true);
+        const answersContainer = questionElement.querySelector('.answersBox');
+        answersContainer.appendChild(answerElement);
+        reIndexAnswers();
+      };
 
       function enforceMinMax(el) {
         if (el.value != '') {
@@ -491,6 +499,7 @@
         }
 
         questionsContainer.appendChild(questionElement);
+
         questionElement.querySelector('.addAnswer').addEventListener('click', () => {
           const answerElement = answerElementTemplate.cloneNode(true);
           const answerNumber = answerElement.querySelector('.answerNumber');
