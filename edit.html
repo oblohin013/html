@@ -546,16 +546,7 @@
         questionsElements.push(questionElement);
         syncSliderWithQuestions();
 
-        questionElement.querySelector('.addAnswer').addEventListener('click', () => {
-          const answerElement = answerElementTemplate.cloneNode(true);
-          const answerNumber = answerElement.querySelector('.answerNumber');
-          for (let j = 0; j < answersContainer.children.length; j++) {
-            const countAnswers = answersContainer.children.length;
-            answerNumber.innerHTML = countAnswers + 1 + '.';
-          }
-          answersContainer.appendChild(answerElement);
-          answersElements.push(answerElement);
-        });
+        questionElement.querySelector('.addAnswer').addEventListener('click', () => addAnswerButton(questionElement));
 
         questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
           for (let i = 0; i < questionsContainer.children.length; i++) {
