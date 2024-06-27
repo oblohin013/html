@@ -410,10 +410,10 @@
         readyTest.id = id;
         tests[index] = readyTest;
         localStorage.setItem('oleg', JSON.stringify(tests));
-        cancelEdit();
+        cancelEditButton();
       };
 
-      const cancelEdit = () => {
+      const cancelEditButton = () => {
         document.location = 'admin.html';
       };
 
@@ -429,11 +429,12 @@
       };
 
       const addAnswerButton = () => {
+        const questionElement = document.querySelector('.newQuestion');
         const answerElementTemplate = document.getElementById('newAnswer').content.firstElementChild;
         const answerElement = answerElementTemplate.cloneNode(true);
         const answersContainer = questionElement.querySelector('.answersBox');
         answersContainer.appendChild(answerElement);
-        reIndexAnswers();
+        reIndexAnswers(questionElement);
       };
 
       function enforceMinMax(el) {
@@ -500,16 +501,7 @@
 
         questionsContainer.appendChild(questionElement);
 
-        questionElement.querySelector('.addAnswer').addEventListener('click', () => {
-          const answerElement = answerElementTemplate.cloneNode(true);
-          const answerNumber = answerElement.querySelector('.answerNumber');
-          for (let j = 0; j < answersContainer.children.length; j++) {
-            const countAnswers = answersContainer.children.length;
-            answerNumber.innerHTML = countAnswers + 1 + '.';
-          }
-          answersContainer.appendChild(answerElement);
-          //answersElements.push(answerElement);
-        });
+        questionElement.querySelector('.addAnswer').addEventListener('click', () => addAnswerButton());
 
         questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
           for (let i = 0; i < questionsContainer.children.length; i++) {
@@ -583,7 +575,7 @@
       });
 
       // вынести в функцию cancelEdit
-      document.querySelector('.cancel').addEventListener('click', () => cancelEdit());
+      document.querySelector('.cancel').addEventListener('click', () => cancelEditButton());
 
       // вынести в функцию saveTestToLocalStorage
       document.querySelector('.ok').addEventListener('click', () => saveTestToLocalStorage());
