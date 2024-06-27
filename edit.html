@@ -428,8 +428,8 @@
         }
       };
 
-      const addAnswerButton = () => {
-        const questionElement = document.querySelector('.newQuestion');
+      const addAnswerButton = (questionElement) => {
+        //const questionElement = document.querySelector('.newQuestion');
         const answerElementTemplate = document.getElementById('newAnswer').content.firstElementChild;
         const answerElement = answerElementTemplate.cloneNode(true);
         const answersContainer = questionElement.querySelector('.answersBox');
@@ -501,7 +501,7 @@
 
         questionsContainer.appendChild(questionElement);
 
-        questionElement.querySelector('.addAnswer').addEventListener('click', () => addAnswerButton());
+        questionElement.querySelector('.addAnswer').addEventListener('click', () => addAnswerButton(questionElement));
 
         questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
           for (let i = 0; i < questionsContainer.children.length; i++) {
