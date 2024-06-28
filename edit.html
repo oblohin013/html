@@ -429,12 +429,25 @@
       };
 
       const addAnswerButton = (questionElement) => {
-        //const questionElement = document.querySelector('.newQuestion');
         const answerElementTemplate = document.getElementById('newAnswer').content.firstElementChild;
         const answerElement = answerElementTemplate.cloneNode(true);
         const answersContainer = questionElement.querySelector('.answersBox');
         answersContainer.appendChild(answerElement);
         reIndexAnswers(questionElement);
+      };
+
+      const deleteQuestionButton = (questionElement) => {
+        const questionsContainer = document.querySelector('.questions');
+        for (let i = 0; i < questionsContainer.children.length; i++) {
+          if (questionsContainer.children.length > 1) {
+            questionElement.remove();
+            syncSliderWithQuestions();
+            output.innerHTML = slider.value;
+            reIndexQuestions();
+          } else {
+            alert('You cannot delete all questions from the test');
+          }
+        }
       };
 
       function enforceMinMax(el) {
@@ -547,22 +560,17 @@
         syncSliderWithQuestions();
 
         questionElement.querySelector('.addAnswer').addEventListener('click', () => addAnswerButton(questionElement));
+        /*
+        const addAnswerButton = (questionElement) => {
+        const answerElementTemplate = document.getElementById('newAnswer').content.firstElementChild;
+        const answerElement = answerElementTemplate.cloneNode(true);
+        const answersContainer = questionElement.querySelector('.answersBox');
+        answersContainer.appendChild(answerElement);
+        reIndexAnswers(questionElement);
+      };
+*/
 
-        questionElement.querySelector('.deleteQuestion').addEventListener('click', () => {
-          for (let i = 0; i < questionsContainer.children.length; i++) {
-            if (questionsContainer.children.length > 1) {
-              questionElement.remove();
-              syncSliderWithQuestions();
-              output.innerHTML = slider.value;
-              for (let j = 0; j < questionsContainer.children.length; j++) {
-                const questionNumberChange = questionsContainer.children.item(j).querySelector('.questionNumber');
-                questionNumberChange.innerHTML = j + 1 + '.';
-              }
-            } else {
-              alert('You cannot delete all questions from the test');
-            }
-          }
-        });
+        questionElement.querySelector('.deleteQuestion').addEventListener('click', () => deleteQuestionButton(questionElement));
       });
 
       // вынести в функцию cancelEdit
