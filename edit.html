@@ -548,26 +548,10 @@
         syncSliderWithQuestions();
 
         questionElement.querySelector('.addAnswer').addEventListener('click', () => addAnswerButton(questionElement));
-        /*
-        const addAnswerButton = (questionElement) => {
-        const answerElementTemplate = document.getElementById('newAnswer').content.firstElementChild;
-        const answerElement = answerElementTemplate.cloneNode(true);
-        const answersContainer = questionElement.querySelector('.answersBox');
-        answersContainer.appendChild(answerElement);
-        reIndexAnswers(questionElement);
-      };
-*/
-
         questionElement.querySelector('.deleteQuestion').addEventListener('click', () => deleteQuestionButton(questionElement));
       });
-
-      // вынести в функцию cancelEdit
       document.querySelector('.cancel').addEventListener('click', () => cancelEditButton());
-
-      // вынести в функцию saveTestToLocalStorage
       document.querySelector('.ok').addEventListener('click', () => saveTestToLocalStorage());
-
-      // вынести в функцию удалить тест
       document.querySelector('.deleteTest').addEventListener('click', () => deleteTestButton());
     </script>
   </body>
