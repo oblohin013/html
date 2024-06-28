@@ -250,6 +250,17 @@
         border-style: solid;
         border-width: thin;
       }
+      .deleteAnswer {
+        cursor: pointer;
+        border: none;
+        position: relative;
+        bottom: 4px;
+      }
+      input[type='checkbox'] {
+        transform: scale(1.5);
+        position: relative;
+        top: 4px;
+      }
     </style>
   </head>
   <body>
@@ -326,6 +337,9 @@
         <div class="meaning">
           <input type="checkbox" name="label" class="form-control" value="answerValue" />
         </div>
+        <button type="button" class="deleteAnswer">
+          <img src="closeicon1.png" />
+        </button>
       </div>
     </template>
     <script>
