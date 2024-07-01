@@ -249,12 +249,31 @@
         <div class="meaning">
           <input type="checkbox" name="label" class="form-control" value="answerValue" />
         </div>
-        <button type="button" class="deleteAnswer">
+        <button type="button" class="deleteAnswer" onclick="deleteAnswerButton(this)">
           <img src="closeicon1.png" />
         </button>
       </div>
     </template>
     <script>
+      const reIndexAnswers = (questionElement) => {
+        const answerElements = questionElement.querySelectorAll('.newAnswer');
+        answerElements.forEach((answerElement, index) => {
+          answerElement.querySelector('.answerNumber').textContent = `${index + 1}.`;
+        });
+      };
+
+      const deleteAnswerButton = (buttonElement) => {
+        const answersBox = buttonElement.parentElement.parentElement;
+        for (let i = 0; i < answersBox.children.length; i++) {
+          if (answersBox.children.length > 1) {
+            buttonElement.parentElement.remove();
+            reIndexAnswers(answersBox.parentElement.parentElement.parentElement);
+          } else {
+            alert('You cannot delete all answers from the test');
+          }
+        }
+      };
+
       const questionsContainer = document.querySelector('.questions');
       const questionElementTemplate = document.getElementById('newQuestion').content.firstElementChild;
       const answerElementTemplate = document.getElementById('newAnswer').content.firstElementChild;

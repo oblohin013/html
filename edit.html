@@ -337,7 +337,7 @@
         <div class="meaning">
           <input type="checkbox" name="label" class="form-control" value="answerValue" />
         </div>
-        <button type="button" class="deleteAnswer">
+        <button type="button" class="deleteAnswer" onclick="deleteAnswerButton(this)">
           <img src="closeicon1.png" />
         </button>
       </div>
@@ -460,6 +460,18 @@
             reIndexQuestions();
           } else {
             alert('You cannot delete all questions from the test');
+          }
+        }
+      };
+
+      const deleteAnswerButton = (buttonElement) => {
+        const answersBox = buttonElement.parentElement.parentElement;
+        for (let i = 0; i < answersBox.children.length; i++) {
+          if (answersBox.children.length > 1) {
+            buttonElement.parentElement.remove();
+            reIndexAnswers(answersBox.parentElement.parentElement.parentElement);
+          } else {
+            alert('You cannot delete all answers from the test');
           }
         }
       };
