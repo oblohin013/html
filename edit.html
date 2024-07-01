@@ -216,6 +216,7 @@
         margin-left: 15px;
         justify-content: end;
         cursor: pointer;
+        border: none;
       }
       .answers {
         display: flex;
@@ -256,6 +257,7 @@
         position: relative;
         bottom: 4px;
       }
+
       input[type='checkbox'] {
         transform: scale(1.5);
         position: relative;
@@ -325,7 +327,9 @@
             <div class="addAnswer">Добавить ответ</div>
           </div>
         </div>
-        <div class="deleteQuestion">Х</div>
+        <button type="button" class="deleteQuestion" onclick="deleteQuestionButton(this)">
+          <img src="closeicon1.png" />
+        </button>
       </div>
     </template>
     <template id="newAnswer">
@@ -450,11 +454,11 @@
         reIndexAnswers(questionElement);
       };
 
-      const deleteQuestionButton = (questionElement) => {
+      const deleteQuestionButton = (buttonElement) => {
         const questionsContainer = document.querySelector('.questions');
         for (let i = 0; i < questionsContainer.children.length; i++) {
           if (questionsContainer.children.length > 1) {
-            questionElement.remove();
+            buttonElement.parentElement.remove();
             syncSliderWithQuestions();
             output.innerHTML = slider.value;
             reIndexQuestions();
@@ -542,7 +546,7 @@
 
         questionElement.querySelector('.addAnswer').addEventListener('click', () => addAnswerButton(questionElement));
 
-        questionElement.querySelector('.deleteQuestion').addEventListener('click', () => deleteQuestionButton(questionElement));
+        //questionElement.querySelector('.deleteQuestion').addEventListener('click', () => deleteQuestionButton(questionElement));
       }
 
       const questions = [];
@@ -574,7 +578,7 @@
         syncSliderWithQuestions();
 
         questionElement.querySelector('.addAnswer').addEventListener('click', () => addAnswerButton(questionElement));
-        questionElement.querySelector('.deleteQuestion').addEventListener('click', () => deleteQuestionButton(questionElement));
+        //questionElement.querySelector('.deleteQuestion').addEventListener('click', () => deleteQuestionButton(questionElement));
       });
       document.querySelector('.cancel').addEventListener('click', () => cancelEditButton());
       document.querySelector('.ok').addEventListener('click', () => saveTestToLocalStorage());
