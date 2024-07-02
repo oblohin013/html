@@ -475,7 +475,7 @@
             buttonElement.parentElement.remove();
             reIndexAnswers(answersBox.parentElement.parentElement.parentElement);
           } else {
-            alert('You cannot delete all answers from the test');
+            buttonElement.disabled = true;
           }
         }
       };
@@ -541,12 +541,8 @@
           answerLabel.checked = answer.label;
           answersContainer.appendChild(answerElement);
         }
-
         questionsContainer.appendChild(questionElement);
-
         questionElement.querySelector('.addAnswer').addEventListener('click', () => addAnswerButton(questionElement));
-
-        //questionElement.querySelector('.deleteQuestion').addEventListener('click', () => deleteQuestionButton(questionElement));
       }
 
       const questions = [];
@@ -576,9 +572,7 @@
         questionsContainer.appendChild(questionElement);
         questionsElements.push(questionElement);
         syncSliderWithQuestions();
-
         questionElement.querySelector('.addAnswer').addEventListener('click', () => addAnswerButton(questionElement));
-        //questionElement.querySelector('.deleteQuestion').addEventListener('click', () => deleteQuestionButton(questionElement));
       });
       document.querySelector('.cancel').addEventListener('click', () => cancelEditButton());
       document.querySelector('.ok').addEventListener('click', () => saveTestToLocalStorage());

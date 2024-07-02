@@ -269,7 +269,7 @@
             buttonElement.parentElement.remove();
             reIndexAnswers(answersBox.parentElement.parentElement.parentElement);
           } else {
-            alert('You cannot delete all answers from the test');
+            buttonElement.disabled = true;
           }
         }
       };
